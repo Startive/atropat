@@ -1,6 +1,6 @@
 use std::io;
 use reqwest;
-use chrono::{NaiveDateTime};
+use chrono::NaiveDateTime;
 
 use crate::structs::{Town};
 use crate::pause::pause;
@@ -34,7 +34,7 @@ pub fn lookup() {
     let name: String = json.name;
     let mayor: String = json.mayor;
     let balance: f32 = json.stats.balance;
-    let registered = NaiveDateTime::from_timestamp(json.timestamps.registered / 1000, 0);
+    let registered = NaiveDateTime::from_timestamp_opt(json.timestamps.registered / 1000, 0);
     let nation = json.nation;
     let is_public: bool = json.status.isPublic;
     let is_open: bool = json.status.isOpen;
@@ -45,7 +45,7 @@ pub fn lookup() {
     println!("=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=");
     println!("Town Name: {}", name);
     println!("Mayor: {}", mayor);
-    println!("Registered: {}", registered);
+    println!("Registered: {}", registered.unwrap().format("%d/%m/%Y %H:%M:%S"));
     println!("In Nation: {}", nation);
     println!("Gold in bank: {}", balance);
     if is_public { println!("Public: Yes"); } else { println!("Public: No"); };
